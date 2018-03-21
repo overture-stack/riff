@@ -20,6 +20,9 @@ package bio.overture.riff.service;
 import bio.overture.riff.jwt.JWTUser;
 import bio.overture.riff.model.Riff;
 import bio.overture.riff.model.ShortenRequest;
+import bio.overture.riff.repository.RiffRepository;
+import lombok.val;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -27,20 +30,37 @@ import java.util.Date;
 @Service
 public class RiffService {
 
+  private RiffRepository repository;
+
+  @Autowired
+  public RiffService(RiffRepository repository) {
+    this.repository = repository;
+  }
+
   public Riff getRiff(String id) {
     return Riff.builder()
-        .id(id)
+        .id(Long.valueOf(id, 36))
         .content("foobar")
         .uid("fakeuser")
         .alias("example")
-        .shared("false")
+        .shared(false)
         .createdDate(new Date())
         .updatedDate(new Date())
         .build();
   }
 
   public String makeRiff(JWTUser user, ShortenRequest request) {
-    return "ABC123";
+    val riff = Riff.builder()
+        .content(request.getContent())
+        .uid(user.getUid())
+        .alias(request.getAlias())
+        .shared(request.isShared())
+        .createdDate(new Date())
+        .updatedDate(new Date())
+        .build();
+
+    val newRiff = repository.save(riff);
+    return Long.toString(newRiff.getId(), 36);
   }
 
 }

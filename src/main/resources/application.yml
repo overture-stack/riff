@@ -4,3 +4,17 @@ server:
 auth:
   jwt:
     publicKeyUrl: "http://localhost:8081/oauth/token/public_key"
+
+
+spring:
+  profiles: development
+  jpa:
+    database: postgresql
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:postgresql://localhost:5432/riff
+    username: postgres
+    password:
+    driver-class-name: org.postgresql.Driver

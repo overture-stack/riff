@@ -15,29 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package bio.overture.riff.model;
+package bio.overture.riff.repository;
 
-import lombok.Builder;
-import lombok.Data;
+import bio.overture.riff.model.Riff;
+import org.springframework.data.repository.CrudRepository;
 
-import javax.persistence.*;
-import java.util.Date;
+import java.util.List;
 
-@Entity
-@Table(name = "riff")
-@Data
-@Builder
-public class Riff {
+public interface RiffRepository extends CrudRepository<Riff, Long> {
 
-  @Id
-  @Column(nullable = false, name="id", updatable = false)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  Long id;
-  String uid;
-  String content;
-  String alias;
-  boolean shared;
-  Date createdDate;
-  Date updatedDate;
+  List<Riff> findByUid(String uid);
 
 }
