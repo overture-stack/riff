@@ -26,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RiffService {
@@ -37,16 +39,12 @@ public class RiffService {
     this.repository = repository;
   }
 
-  public Riff getRiff(String id) {
-    return Riff.builder()
-        .id(Long.valueOf(id, 36))
-        .content("foobar")
-        .uid("fakeuser")
-        .alias("example")
-        .shared(false)
-        .createdDate(new Date())
-        .updatedDate(new Date())
-        .build();
+  public List<Riff> getUserRiffs(JWTUser user) {
+    return repository.findByUidAndShared(user.getUid(), false);
+  }
+
+  public Optional<Riff> getRiff(String id) {
+    return repository.findById(Long.valueOf(id, 36));
   }
 
   public String makeRiff(JWTUser user, ShortenRequest request) {

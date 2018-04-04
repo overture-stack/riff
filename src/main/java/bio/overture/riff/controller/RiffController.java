@@ -44,14 +44,22 @@ public class RiffController {
 
   @GetMapping
   public List<Riff> getUserRiffs() {
-    //val user = jwtFacade.getUser();
-    // TODO: Return a users riffs.
-    return null;
+    val user = jwtFacade.getUser();
+    if (user.isPresent()) {
+      return service.getUserRiffs(user.get());
+    } else {
+      throw new UnauthorizedUserException("No user");
+    }
   }
 
   @GetMapping("{id}")
   public Riff getRiff(@PathVariable("id") String id) {
-    return service.getRiff(id);
+    val riff = service.getRiff(id);
+    if (riff.isPresent()) {
+      return riff.get();
+    } else {
+      return null;
+    }
   }
 
   @PostMapping("shorten")
@@ -68,7 +76,12 @@ public class RiffController {
   @PutMapping("{id}")
   public Riff updateRiff(@PathParam("id") String id, @RequestBody ShortenRequest request) {
     // TODO: do update
-    return service.getRiff(id);
+    val riff = service.getRiff(id);
+    if (riff.isPresent()) {
+      return riff.get();
+    } else {
+      return null;
+    }
   }
 
   @DeleteMapping("{id}")

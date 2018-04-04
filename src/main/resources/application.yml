@@ -3,7 +3,7 @@ server:
 
 auth:
   jwt:
-    publicKeyUrl: "http://localhost:8081/oauth/token/public_key"
+    publicKeyUrl: "https://demo.ego.kfdrc.org/oauth/token/public_key"
 
 
 spring:
