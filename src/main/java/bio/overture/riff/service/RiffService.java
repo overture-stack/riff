@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ontario Institute for Cancer Research
+ * Copyright (c) 2018. The Ontario Institute for Cancer Research. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -12,11 +12,12 @@
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package bio.overture.riff.service;
 
+import bio.overture.riff.exception.RiffNotFoundException;
 import bio.overture.riff.jwt.JWTUser;
 import bio.overture.riff.model.Riff;
 import bio.overture.riff.model.ShortenRequest;
@@ -73,6 +74,25 @@ public class RiffService {
       }
     }
     return false;
+  }
+
+  @SneakyThrows
+  public Riff updateRiff(JWTUser user, String id, ShortenRequest request) {
+    val optionalRiff = repository.findById(Long.valueOf(id, 36));
+    if (optionalRiff.isPresent()) {
+      val riff = Riff.builder()
+        .content(request.getContent())
+        .uid(user.getUid())
+        .alias(request.getAlias())
+        .sharedPublicly(request.isSharedPublicly())
+        .creationDate(optionalRiff.get().getCreationDate())
+        .updatedDate(new Date())
+        .build();
+      val updated = repository.save(riff);
+      return updated;
+    } else {
+     throw new RiffNotFoundException();
+    }
   }
 
 }

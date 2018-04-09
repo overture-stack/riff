@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ontario Institute for Cancer Research
+ * Copyright (c) 2018. The Ontario Institute for Cancer Research. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -12,7 +12,7 @@
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package bio.overture.riff.controller;
@@ -31,7 +31,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/")
+@RequestMapping("/riff")
 public class RiffController {
 
   private JWTFacadeInterface jwtFacade;
@@ -42,7 +42,7 @@ public class RiffController {
     this.service = service;
   }
 
-  @GetMapping("user/{userId}")
+  @GetMapping("/user/{userId}")
   public List<Riff> getUserRiffs(@PathVariable String userId) {
     val user = jwtFacade.getUser();
     if (user.isPresent()) {
@@ -52,7 +52,7 @@ public class RiffController {
     }
   }
 
-  @GetMapping("{id}")
+  @GetMapping("/{id}")
   public Riff getRiff(@PathVariable("id") String id) {
     val riff = service.getRiff(id);
     if (riff.isPresent()) {
@@ -62,7 +62,7 @@ public class RiffController {
     }
   }
 
-  @PostMapping("shorten")
+  @PostMapping("/shorten")
   public Riff makeRiff(@RequestBody ShortenRequest request) {
     val user = jwtFacade.getUser();
 
@@ -73,18 +73,17 @@ public class RiffController {
     }
   }
 
-  @PutMapping("{id}")
+  @PutMapping("/{id}")
   public Riff updateRiff(@PathParam("id") String id, @RequestBody ShortenRequest request) {
-    // TODO: do update
-    val riff = service.getRiff(id);
-    if (riff.isPresent()) {
-      return riff.get();
+    val user = jwtFacade.getUser();
+    if (user.isPresent()) {
+      return service.updateRiff(user.get(), id, request);
     } else {
       return null;
     }
   }
 
-  @DeleteMapping("{id}")
+  @DeleteMapping("/{id}")
   public Boolean deleteRiff(@PathVariable("id") String id) {
     val user = jwtFacade.getUser();
     if (user.isPresent()) {
