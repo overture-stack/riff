@@ -45,8 +45,8 @@ public class SwaggerConfig {
   private ApiInfo apiInfo() {
     return new ApiInfoBuilder()
       .title("Riff API")
-      .description("Riff API reference for developers. Riff is an open source system saving and "
-        + "listing short URLs and contextual data for end users.")
+      .description("Riff API reference for developers. Riff is an open source system for saving and "
+        + "listing short URLs, saved queries, and contextual data for end users.")
       .build();
   }
 
