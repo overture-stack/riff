@@ -20,6 +20,7 @@ package bio.overture.riff.service;
 import bio.overture.riff.exception.RiffNotFoundException;
 import bio.overture.riff.jwt.JWTUser;
 import bio.overture.riff.model.Riff;
+import bio.overture.riff.model.RiffResponse;
 import bio.overture.riff.model.ShortenRequest;
 import bio.overture.riff.repository.RiffRepository;
 import lombok.SneakyThrows;
@@ -29,7 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RiffService {
@@ -41,16 +42,25 @@ public class RiffService {
     this.repository = repository;
   }
 
-  public List<Riff> getUserRiffs(JWTUser user) {
-    return repository.findByUidAndSharedPublicly(user.getUid(), false);
-  }
-
-  public Optional<Riff> getRiff(String id) {
-    return repository.findById(Long.valueOf(id, 36));
+  public List<RiffResponse> getUserRiffs(JWTUser user) {
+    return repository.findByUidAndSharedPublicly(user.getUid(), false)
+      .stream()
+      .map(RiffResponse::new)
+      .collect(Collectors.toList());
   }
 
   @SneakyThrows
-  public Riff makeRiff(JWTUser user, ShortenRequest request) {
+  public RiffResponse getRiff(String id) {
+    val opt = repository.findById(Long.valueOf(id, 36));
+    if (opt.isPresent()) {
+      return new RiffResponse(opt.get());
+    } else {
+      throw new RiffNotFoundException();
+    }
+  }
+
+  @SneakyThrows
+  public RiffResponse makeRiff(JWTUser user, ShortenRequest request) {
     val riff = Riff.builder()
       .content(request.getContent())
       .uid(user.getUid())
@@ -61,7 +71,7 @@ public class RiffService {
       .build();
 
     val newRiff = repository.save(riff);
-    return newRiff;
+    return new RiffResponse(newRiff);
   }
 
   public boolean deleteRiff(JWTUser user, String id) {
@@ -77,7 +87,7 @@ public class RiffService {
   }
 
   @SneakyThrows
-  public Riff updateRiff(JWTUser user, String id, ShortenRequest request) {
+  public RiffResponse updateRiff(JWTUser user, String id, ShortenRequest request) {
     val optionalRiff = repository.findById(Long.valueOf(id, 36));
     if (optionalRiff.isPresent()) {
       val riff = Riff.builder()
@@ -89,7 +99,7 @@ public class RiffService {
         .updatedDate(new Date())
         .build();
       val updated = repository.save(riff);
-      return updated;
+      return new RiffResponse(updated);
     } else {
      throw new RiffNotFoundException();
     }

@@ -19,6 +19,7 @@ package bio.overture.riff.controller;
 
 import bio.overture.riff.jwt.JWTFacadeInterface;
 import bio.overture.riff.model.Riff;
+import bio.overture.riff.model.RiffResponse;
 import bio.overture.riff.model.ShortenRequest;
 import bio.overture.riff.service.RiffService;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ public class RiffController {
   }
 
   @GetMapping("/user/{userId}")
-  public List<Riff> getUserRiffs(@PathVariable String userId) {
+  public List<RiffResponse> getUserRiffs(@PathVariable String userId) {
     val user = jwtFacade.getUser();
     if (user.isPresent()) {
       return service.getUserRiffs(user.get());
@@ -53,17 +54,12 @@ public class RiffController {
   }
 
   @GetMapping("/{id}")
-  public Riff getRiff(@PathVariable("id") String id) {
-    val riff = service.getRiff(id);
-    if (riff.isPresent()) {
-      return riff.get();
-    } else {
-      return null;
-    }
+  public RiffResponse getRiff(@PathVariable("id") String id) {
+    return service.getRiff(id);
   }
 
   @PostMapping("/shorten")
-  public Riff makeRiff(@RequestBody ShortenRequest request) {
+  public RiffResponse makeRiff(@RequestBody ShortenRequest request) {
     val user = jwtFacade.getUser();
 
     if (user.isPresent()) {
@@ -74,21 +70,20 @@ public class RiffController {
   }
 
   @PutMapping("/{id}")
-  public Riff updateRiff(@PathParam("id") String id, @RequestBody ShortenRequest request) {
+  public RiffResponse updateRiff(@PathVariable("id") String id, @RequestBody ShortenRequest request) {
     val user = jwtFacade.getUser();
     if (user.isPresent()) {
       return service.updateRiff(user.get(), id, request);
     } else {
-      return null;
+      throw new UnauthorizedUserException("No user");
     }
   }
 
   @DeleteMapping("/{id}")
-  public Boolean deleteRiff(@PathVariable("id") String id) {
+  public boolean deleteRiff(@PathVariable("id") String id) {
     val user = jwtFacade.getUser();
     if (user.isPresent()) {
-      val deleted = service.deleteRiff(user.get(), id);
-      return deleted;
+      return service.deleteRiff(user.get(), id);
     } else {
       throw new UnauthorizedUserException("No user");
     }
