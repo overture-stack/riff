@@ -21,6 +21,7 @@ import bio.overture.riff.jwt.JWTUser;
 import bio.overture.riff.model.Riff;
 import bio.overture.riff.model.ShortenRequest;
 import bio.overture.riff.repository.RiffRepository;
+import lombok.SneakyThrows;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,25 +41,38 @@ public class RiffService {
   }
 
   public List<Riff> getUserRiffs(JWTUser user) {
-    return repository.findByUidAndShared(user.getUid(), false);
+    return repository.findByUidAndSharedPublicly(user.getUid(), false);
   }
 
   public Optional<Riff> getRiff(String id) {
     return repository.findById(Long.valueOf(id, 36));
   }
 
-  public String makeRiff(JWTUser user, ShortenRequest request) {
+  @SneakyThrows
+  public Riff makeRiff(JWTUser user, ShortenRequest request) {
     val riff = Riff.builder()
-        .content(request.getContent())
-        .uid(user.getUid())
-        .alias(request.getAlias())
-        .shared(request.isShared())
-        .createdDate(new Date())
-        .updatedDate(new Date())
-        .build();
+      .content(request.getContent())
+      .uid(user.getUid())
+      .alias(request.getAlias())
+      .sharedPublicly(request.isSharedPublicly())
+      .creationDate(new Date())
+      .updatedDate(new Date())
+      .build();
 
     val newRiff = repository.save(riff);
-    return Long.toString(newRiff.getId(), 36);
+    return newRiff;
+  }
+
+  public boolean deleteRiff(JWTUser user, String id) {
+    val optionalRiff = repository.findById(Long.valueOf(id, 36));
+    if (optionalRiff.isPresent()) {
+      val riff = optionalRiff.get();
+      if (user.getUid().equals(riff.getUid())) {
+        repository.delete(riff);
+        return true;
+      }
+    }
+    return false;
   }
 
 }

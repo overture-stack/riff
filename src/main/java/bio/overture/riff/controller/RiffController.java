@@ -42,8 +42,8 @@ public class RiffController {
     this.service = service;
   }
 
-  @GetMapping
-  public List<Riff> getUserRiffs() {
+  @GetMapping("user/{userId}")
+  public List<Riff> getUserRiffs(@PathVariable String userId) {
     val user = jwtFacade.getUser();
     if (user.isPresent()) {
       return service.getUserRiffs(user.get());
@@ -63,7 +63,7 @@ public class RiffController {
   }
 
   @PostMapping("shorten")
-  public String makeRiff(@RequestBody ShortenRequest request) {
+  public Riff makeRiff(@RequestBody ShortenRequest request) {
     val user = jwtFacade.getUser();
 
     if (user.isPresent()) {
@@ -85,10 +85,14 @@ public class RiffController {
   }
 
   @DeleteMapping("{id}")
-  public String deleteRiff(@PathParam("id") String id) {
-    // val user = jwtFacade.getUser();
-    // TODO: Make sure to only delete if user matches owner of riff.
-    return "ok";
+  public Boolean deleteRiff(@PathVariable("id") String id) {
+    val user = jwtFacade.getUser();
+    if (user.isPresent()) {
+      val deleted = service.deleteRiff(user.get(), id);
+      return deleted;
+    } else {
+      throw new UnauthorizedUserException("No user");
+    }
   }
 
 }

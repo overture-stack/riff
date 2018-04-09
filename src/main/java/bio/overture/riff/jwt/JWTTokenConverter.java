@@ -38,15 +38,15 @@ public class JWTTokenConverter extends JwtAccessTokenConverter {
   public OAuth2Authentication extractAuthentication(Map<String, ?> map) {
     OAuth2Authentication authentication = super.extractAuthentication(map);
 
-    val context = (Map<String, ?>)map.get("context");
-    val user = (Map<String, ?>)context.get("user");
+    val context = (Map<String, ?>) map.get("context");
+    val user = (Map<String, ?>) context.get("user");
     val jwtUser = TypeUtils.convertType(user, JWTUser.class);
 
     // Additional Logic for getting an ego userId.
     if (map.containsKey("sub")) {
       jwtUser.setUid(map.get("sub").toString());
     } else {
-     throw new UnauthorizedUserException("bad token");
+      throw new UnauthorizedUserException("bad token");
     }
 
     authentication.setDetails(jwtUser);

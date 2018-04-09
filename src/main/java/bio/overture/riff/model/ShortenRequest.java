@@ -18,13 +18,14 @@
 package bio.overture.riff.model;
 
 import lombok.Data;
-import lombok.Value;
+
+import java.util.Map;
 
 @Data
 public class ShortenRequest {
 
-    String content;
-    String alias;
-    boolean shared;
+  Map<String, Object> content;
+  String alias;
+  boolean sharedPublicly;
 
 }

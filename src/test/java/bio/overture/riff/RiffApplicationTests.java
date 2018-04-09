@@ -31,7 +31,7 @@ public class RiffApplicationTests {
   @Test
   public void contextLoads() {
     // Passes if application starts
-    assert(true);
+    assert (true);
   }
 
 }

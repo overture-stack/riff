@@ -5,13 +5,17 @@ auth:
   jwt:
     publicKeyUrl: "https://demo.ego.kfdrc.org/oauth/token/public_key"
 
-
 spring:
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: create
     database: postgresql
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+        dialect: com.marvinformatics.hibernate.json.PostgreSQLJsonDialect
   datasource:
     url: jdbc:postgresql://localhost:5432/riff
     username: postgres

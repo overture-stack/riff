@@ -21,9 +21,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Map;
 
 @Entity
 @Table(name = "riff")
@@ -34,14 +36,15 @@ import java.util.Date;
 public class Riff {
 
   @Id
-  @Column(nullable = false, name="id", updatable = false)
+  @Column(nullable = false, name = "id", updatable = false)
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   Long id;
   String uid;
-  String content;
+  @Type(type = "bio.overture.riff.utils.CustomJsonType")
+  Map<String, Object> content;
   String alias;
-  boolean shared;
-  Date createdDate;
+  boolean sharedPublicly;
+  Date creationDate;
   Date updatedDate;
 
 }

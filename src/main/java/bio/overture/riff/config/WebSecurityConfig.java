@@ -25,8 +25,9 @@ import lombok.val;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
+import org.springframework.core.Ordered;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,9 +40,13 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Collections;
 
 @Slf4j
 @EnableWebSecurity
@@ -59,6 +64,8 @@ public class WebSecurityConfig extends ResourceServerConfigurerAdapter {
   public void configure(HttpSecurity http) {
     http
       .authorizeRequests()
+        .antMatchers(HttpMethod.OPTIONS, "/*").permitAll()
+        .antMatchers(HttpMethod.GET, "/*").permitAll()
         .antMatchers("/health").permitAll()
         .antMatchers("/isAlive").permitAll()
         .antMatchers("/upload/**").permitAll()
@@ -71,6 +78,26 @@ public class WebSecurityConfig extends ResourceServerConfigurerAdapter {
     .and()
       .addFilterAfter(new JWTAuthorizationFilter(), BasicAuthenticationFilter.class);
   }
+
+  @Bean
+  public FilterRegistrationBean simpleCorsFilter() {
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
+    config.setAllowedOrigins(Collections.singletonList("*"));
+    config.setAllowedMethods(Collections.singletonList("*"));
+    config.setAllowedHeaders(Collections.singletonList("*"));
+    source.registerCorsConfiguration("/**", config);
+    FilterRegistrationBean bean = new FilterRegistrationBean(new org.springframework.web.filter.CorsFilter(source));
+    bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+    return bean;
+  }
+
+/*  @Bean
+  @Primary
+  public CorsFilter corsFilter() {
+    return new CorsFilter();
+  }*/
 
   @Override
   public void configure(ResourceServerSecurityConfigurer config) {
@@ -90,7 +117,6 @@ public class WebSecurityConfig extends ResourceServerConfigurerAdapter {
 
 
   @Bean
-  @Primary
   public DefaultTokenServices tokenServices() {
     val defaultTokenServices = new DefaultTokenServices();
     defaultTokenServices.setTokenStore(tokenStore());

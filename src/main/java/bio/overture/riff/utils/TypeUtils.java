@@ -23,7 +23,7 @@ import lombok.val;
 
 
 public class TypeUtils {
-  public static  <T> T convertType(Object fromObject, Class<T> tClass){
+  public static <T> T convertType(Object fromObject, Class<T> tClass) {
     val mapper = new ObjectMapper();
     mapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
     return mapper.convertValue(fromObject, tClass);
