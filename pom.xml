@@ -123,7 +123,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-vault-starter-config</artifactId>
-            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
