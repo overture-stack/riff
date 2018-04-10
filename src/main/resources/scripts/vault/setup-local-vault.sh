@@ -25,5 +25,5 @@ export VAULT_UNSEAL_KEY3=$(echo $(echo $OUTPUT | awk -F'Unseal Key 3:' '{print$2
 ./vault operator unseal $VAULT_UNSEAL_KEY2
 ./vault operator unseal $VAULT_UNSEAL_KEY3
 
-./vault write secret/development/oicr/riff/dev spring.datasource.username=postgres
-./vault read /secret/development/oicr/riff/dev
+./vault write secret/development/overture/riff/dev spring.datasource.username=postgres
+./vault read /secret/development/overture/riff/dev

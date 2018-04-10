@@ -22,7 +22,7 @@ export RIFF_SERVER_PORT=8081
 
 # === VAULT CONFIG
 # Leave all below empty if not using VAULT
-export VAULT_APPLICATION_NAME=
+export VAULT_APPLICATION_NAME=development/overture/riff
 export RIFF_VAULT_URI=
 export RIFF_VAULT_SCHEME=http
 export RIFF_VAULT_HOST=localhost
