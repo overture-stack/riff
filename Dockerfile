@@ -20,13 +20,16 @@ RUN mvn verify clean --fail-never
 
 COPY . .
 
-RUN mvn install -DskipTests
+RUN mkdir -p /srv/riff/install \
+    && mkdir -p /srv/riff/exec \
+    && mvn package -Dmaven.test.skip=true \
+    && mv /usr/src/app/target/riff-*-SNAPSHOT.jar /srv/riff/install/RIFF.jar \
+    && mv /usr/src/app/src/main/resources/scripts/run.sh /srv/riff/exec/run.sh
 
-FROM openjdk:8u121-jdk-alpine
+# setup required environment variables
+ENV RIFF_INSTALL_PATH /srv/riff
 
-COPY --from=0 /usr/src/app/target/*.jar .
+# start ego server
+WORKDIR $RIFF_INSTALL_PATH
+CMD $RIFF_INSTALL_PATH/exec/run.sh
 
-EXPOSE 8081
-
-CMD java -jar *.jar \
-    --server.port=8081
