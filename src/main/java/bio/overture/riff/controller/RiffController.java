@@ -18,7 +18,6 @@
 package bio.overture.riff.controller;
 
 import bio.overture.riff.jwt.JWTFacadeInterface;
-import bio.overture.riff.model.Riff;
 import bio.overture.riff.model.RiffResponse;
 import bio.overture.riff.model.ShortenRequest;
 import bio.overture.riff.service.RiffService;
@@ -27,7 +26,6 @@ import lombok.val;
 import org.springframework.security.oauth2.common.exceptions.UnauthorizedUserException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @Slf4j
