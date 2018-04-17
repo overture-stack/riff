@@ -23,6 +23,7 @@ import bio.overture.riff.model.ShortenRequest;
 import bio.overture.riff.service.RiffService;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.oauth2.common.exceptions.UnauthorizedUserException;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +43,8 @@ public class RiffController {
   }
 
   @GetMapping("/user/{userId}")
-  public List<RiffResponse> getUserRiffs(@PathVariable String userId) {
+  public List<RiffResponse> getUserRiffs(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = true) final String accessToken,
+                                         @PathVariable String userId) {
     val user = jwtFacade.getUser();
     if (user.isPresent()) {
       return service.getUserRiffs(user.get());
@@ -57,7 +59,8 @@ public class RiffController {
   }
 
   @PostMapping("/shorten")
-  public RiffResponse makeRiff(@RequestBody ShortenRequest request) {
+  public RiffResponse makeRiff(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = true) final String accessToken,
+                               @RequestBody ShortenRequest request) {
     val user = jwtFacade.getUser();
 
     if (user.isPresent()) {
@@ -68,7 +71,8 @@ public class RiffController {
   }
 
   @PutMapping("/{id}")
-  public RiffResponse updateRiff(@PathVariable("id") String id, @RequestBody ShortenRequest request) {
+  public RiffResponse updateRiff(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = true) final String accessToken,
+                                 @PathVariable("id") String id, @RequestBody ShortenRequest request) {
     val user = jwtFacade.getUser();
     if (user.isPresent()) {
       return service.updateRiff(user.get(), id, request);
@@ -78,7 +82,8 @@ public class RiffController {
   }
 
   @DeleteMapping("/{id}")
-  public boolean deleteRiff(@PathVariable("id") String id) {
+  public boolean deleteRiff(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = true) final String accessToken,
+                            @PathVariable("id") String id) {
     val user = jwtFacade.getUser();
     if (user.isPresent()) {
       return service.deleteRiff(user.get(), id);
