@@ -24,7 +24,7 @@ else
             --spring.profiles.active=$RIFF_IAM_PROFILE \
             --spring.datasource.url=jdbc:postgresql://$RIFF_DB_HOST:$RIFF_DB_PORT/$RIFF_DB \
             --server.port=$RIFF_SERVER_PORT \
-            --spring.application.name=$VAULT_APPLICATION_NAME \
+            --spring.application.name=$RIFF_VAULT_APPLICATION_NAME \
             --spring.cloud.vault.uri=$RIFF_VAULT_URI \
             --spring.cloud.vault.scheme=$RIFF_VAULT_SCHEME \
             --spring.cloud.vault.host=$RIFF_VAULT_HOST \
@@ -36,7 +36,7 @@ else
             --spring.profiles.active=$RIFF_TOKEN_PROFILE \
             --spring.datasource.url=jdbc:postgresql://$RIFF_DB_HOST:$RIFF_DB_PORT/$RIFF_DB \
             --server.port=$RIFF_SERVER_PORT \
-            --spring.application.name=$VAULT_APPLICATION_NAME \
+            --spring.application.name=$RIFF_VAULT_APPLICATION_NAME \
             --spring.cloud.vault.uri=$RIFF_VAULT_URI \
             --spring.cloud.vault.scheme=$RIFF_VAULT_SCHEME \
             --spring.cloud.vault.host=$RIFF_VAULT_HOST \
