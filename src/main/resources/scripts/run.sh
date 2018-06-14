@@ -15,7 +15,8 @@ then
         --spring.datasource.url="jdbc:postgresql://$RIFF_DB_HOST:$RIFF_DB_PORT/$RIFF_DB?stringtype=unspecified" \
         --spring.datasource.username="$RIFF_DB_USER" \
         --spring.datasource.password="$RIFF_DB_PASS" \
-        --server.port=$RIFF_SERVER_PORT
+        --server.port=$RIFF_SERVER_PORT \
+        --auth.jwt.publicKeyUrl=$EGO_URL
 else
     if [ -z "$VAULT_TOKEN" ]
     then
@@ -29,7 +30,9 @@ else
             --spring.cloud.vault.scheme=$RIFF_VAULT_SCHEME \
             --spring.cloud.vault.host=$RIFF_VAULT_HOST \
             --spring.cloud.vault.port=$RIFF_VAULT_PORT \
-            --spring.cloud.vault.aws-iam.role=$RIFF_IAM_ROLE
+            --spring.cloud.vault.aws-iam.role=$RIFF_IAM_ROLE \
+            --auth.jwt.publicKeyUrl=$EGO_URL
+
     else
         echo "Running with Vault token"
         java -jar $RIFF_INSTALL_PATH/install/RIFF.jar \
@@ -41,6 +44,7 @@ else
             --spring.cloud.vault.scheme=$RIFF_VAULT_SCHEME \
             --spring.cloud.vault.host=$RIFF_VAULT_HOST \
             --spring.cloud.vault.port=$RIFF_VAULT_PORT \
-            --spring.cloud.vault.token=$VAULT_TOKEN
+            --spring.cloud.vault.token=$VAULT_TOKEN \
+            --auth.jwt.publicKeyUrl=$EGO_URL
     fi
 fi
