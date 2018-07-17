@@ -1,9 +1,10 @@
 <h1 align="center"> Riff </h1> <br>
 
 <p align="center">
-  A Microservice for URL Shortening and sharing.
+  A Microservice for URL shortening and sharing.
 </p>
 
+<p align="center"><img alt="Release Candidate" title="Release Candidate" src="http://www.overture.bio/img/progress-horizontal-RC.svg" width="320" /></p>
 
 ## Table of Contents
 
