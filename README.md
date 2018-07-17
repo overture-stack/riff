@@ -63,6 +63,29 @@ Update __application.yml__. Set `auth.jwt.publicKeyUrl` to the URL to fetch the 
 
 The default value in the __application.yml__ file is set to connect to EGO running locally on its default port `8081`.
 
+### Setup Database
+1. Install Postgres
+2. Create a Database: ego with user postgres and empty password
+
+#### Database Migrations with Flyway
+Database migrations and versioning is managed by [flyway](https://flywaydb.org/). 
+
+1. Download the flyway cli client here: [flyway-commandline](https://flywaydb.org/download/community)
+2. Unpack the client in a directory of your choosing
+3. Execute the flyway client pointing it to the configuration and migration directories in this repository.
+
+Get current version information:
+```bash
+./flyway -configFiles=<path_to_riff>/riff/src/main/resources/flyway/conf/flyway.conf -locations=filesystem:<path_to_ego>/ego/src/main/resources/flyway/sql info
+```
+Run outstanding migrations:
+```bash
+./flyway -configFiles=<path_to_riff>/riff/src/main/resources/flyway/conf/flyway.conf -locations=filesystem:<path_to_ego>/ego/src/main/resources/flyway/sql migrate
+```
+
+To see the migration naming convention, [click here.](https://flywaydb.org/documentation/migrations#naming)
+
+
 ### Run Local
 ```bash
 $ mvn spring-boot:run
