@@ -1,7 +1,7 @@
 version: 2
+executorType: machine
 jobs:
   test:
-    machine: true
     docker:
       - image: circleci/openjdk:8-jdk
 
