@@ -21,3 +21,33 @@ spring:
     username: postgres
     password:
     driver-class-name: org.postgresql.Driver
+
+spring:
+  flyway:
+    enabled: false
+
+---
+
+spring:
+  profiles: test
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    database: postgresql
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+        dialect: com.marvinformatics.hibernate.json.PostgreSQLJsonDialect
+
+spring.datasource:
+  driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  url: jdbc:tc:postgresql:9.5.13://localhost:5432/riff?TC_INITFUNCTION=bio.overture.riff.test.FlywayInit::initTestContainers
+
+  username: postgres
+  password:
+  max-active: 1000
+  max-idle: 10
+  min-idle: 1
