@@ -1,6 +1,6 @@
 
 CREATE TABLE riff (
-    id BIGINT NOT NULL,
+    id SERIAL NOT NULL,
     alias VARCHAR(255),
     content json,
     creation_date TIMESTAMP WITHOUT TIME ZONE,

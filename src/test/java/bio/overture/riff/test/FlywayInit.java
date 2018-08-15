@@ -15,36 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package bio.overture.riff.model;
+package bio.overture.riff.test;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
+import lombok.extern.slf4j.Slf4j;
+import org.flywaydb.core.Flyway;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
-import javax.persistence.*;
-import java.util.Date;
-import java.util.Map;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-@Entity
-@Table(name = "riff")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Riff {
+@Slf4j
+public class FlywayInit {
 
-  @Id
-  @Column(nullable = false, name = "id", updatable = false)
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
-  String uid;
-  @Type(type = "bio.overture.riff.utils.CustomJsonType")
-  Map<String, Object> content;
-  String alias;
-  boolean sharedPublicly;
-  Date creationDate;
-  Date updatedDate;
+  public static void initTestContainers(Connection connection) throws SQLException {
+    log.info("init test containers with flyway ******************************");
+
+    Flyway flyway = new Flyway();
+    flyway.setLocations("classpath:flyway/sql");
+    flyway.setDataSource(new SingleConnectionDataSource(connection, true));
+    flyway.migrate();
+  }
 
 }
