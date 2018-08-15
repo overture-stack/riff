@@ -1,6 +1,7 @@
 version: 2
 jobs:
   test:
+    machine: true
     docker:
       - image: circleci/openjdk:8-jdk
 
