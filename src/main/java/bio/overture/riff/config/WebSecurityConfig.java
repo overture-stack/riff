@@ -68,6 +68,8 @@ public class WebSecurityConfig extends ResourceServerConfigurerAdapter {
       .authorizeRequests()
         .antMatchers(HttpMethod.OPTIONS, "/riff/*").permitAll()
         .antMatchers(HttpMethod.GET, "/riff/*").permitAll()
+        .antMatchers(HttpMethod.OPTIONS, "/s/*").permitAll()
+        .antMatchers(HttpMethod.GET, "/s/*").permitAll()
         .antMatchers("/health").permitAll()
         .antMatchers("/isAlive").permitAll()
         .antMatchers("/upload/**").permitAll()
