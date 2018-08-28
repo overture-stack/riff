@@ -17,16 +17,20 @@
 
 package bio.overture.riff.controller;
 
+import bio.overture.riff.config.RiffConfig;
 import bio.overture.riff.jwt.JWTFacadeInterface;
 import bio.overture.riff.model.RiffResponse;
 import bio.overture.riff.model.ShortenRequest;
 import bio.overture.riff.service.RiffService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.oauth2.common.exceptions.UnauthorizedUserException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Slf4j
@@ -37,6 +41,7 @@ public class RiffController {
   private JWTFacadeInterface jwtFacade;
   private RiffService service;
 
+  @Autowired
   public RiffController(JWTFacadeInterface jwtFacade, RiffService service) {
     this.jwtFacade = jwtFacade;
     this.service = service;
