@@ -18,7 +18,6 @@
 package bio.overture.riff.controller;
 
 import bio.overture.riff.config.RiffConfig;
-import bio.overture.riff.jwt.JWTFacadeInterface;
 import bio.overture.riff.service.RiffService;
 import lombok.SneakyThrows;
 import lombok.val;
