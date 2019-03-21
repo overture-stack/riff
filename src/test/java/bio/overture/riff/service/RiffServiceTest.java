@@ -69,15 +69,21 @@ public class RiffServiceTest {
     req.setContent(ImmutableMap.of("thing", "value"));
     req.setSharedPublicly(false);
 
+    val req2 = new ShortenRequest();
+    req2.setAlias("Alias");
+    req2.setContent(ImmutableMap.of("thing", "value"));
+    req2.setSharedPublicly(false);
+
     val resp = service.makeRiff(user, req);
-    assert(resp!=null);
+    val resp2 = service.makeRiff(user, req2);
+    assert (resp != null && resp2 != null);
     setupDone = true;
   }
 
   @Test
   public void getUserRiffs() {
     val riffs = service.getUserRiffs(this.user);
-    assertThat(riffs).hasSize(1);
+    assertThat(riffs).hasSize(2);
   }
 
   @Test
@@ -89,5 +95,14 @@ public class RiffServiceTest {
 
   @Test
   public void updateRiff() {
+    val riffId = "2";
+    val testAlias = "test alias";
+    val request = new ShortenRequest();
+
+    request.setAlias(testAlias);
+    service.updateRiff(this.user, riffId, request);
+    val newRiff = service.getRiff(riffId);
+    assertThat(newRiff.getId()).isEqualTo(riffId);
+    assertThat(newRiff.getAlias()).isEqualTo(testAlias);
   }
 }

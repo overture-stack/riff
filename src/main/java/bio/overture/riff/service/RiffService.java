@@ -88,9 +88,11 @@ public class RiffService {
 
   @SneakyThrows
   public RiffResponse updateRiff(JWTUser user, String id, ShortenRequest request) {
-    val optionalRiff = repository.findById(Long.valueOf(id, 36));
+    val storageId = Long.valueOf(id, 36);
+    val optionalRiff = repository.findById(storageId);
     if (optionalRiff.isPresent()) {
       val riff = Riff.builder()
+        .id(storageId)
         .content(request.getContent())
         .uid(user.getUid())
         .alias(request.getAlias())
