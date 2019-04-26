@@ -75,7 +75,7 @@ public class RiffService {
   }
 
   public boolean deleteRiff(JWTUser user, String id) {
-    val optionalRiff = repository.findById(Long.valueOf(id, 36));
+    val optionalRiff = repository.findByUidAndId(user.getUid(), Long.valueOf(id, 36));
     if (optionalRiff.isPresent()) {
       val riff = optionalRiff.get();
       if (user.getUid().equals(riff.getUid())) {
@@ -89,7 +89,7 @@ public class RiffService {
   @SneakyThrows
   public RiffResponse updateRiff(JWTUser user, String id, ShortenRequest request) {
     val storageId = Long.valueOf(id, 36);
-    val optionalRiff = repository.findById(storageId);
+    val optionalRiff = repository.findByUidAndId(user.getUid(), storageId);
     if (optionalRiff.isPresent()) {
       val riff = Riff.builder()
         .id(storageId)
