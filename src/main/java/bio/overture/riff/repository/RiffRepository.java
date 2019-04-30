@@ -21,12 +21,9 @@ import bio.overture.riff.model.Riff;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface RiffRepository extends CrudRepository<Riff, Long> {
 
-  List<Riff> findByUidAndSharedPublicly(String uid, Boolean shared);
-
-  Optional<Riff> findByUidAndId(String uid, Long id);
+    List<Riff> findByUidAndSharedPublicly(String uid, Boolean shared);
 
 }
