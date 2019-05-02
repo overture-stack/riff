@@ -24,6 +24,6 @@ import java.util.List;
 
 public interface RiffRepository extends CrudRepository<Riff, Long> {
 
-  List<Riff> findByUidAndSharedPublicly(String uid, Boolean shared);
+    List<Riff> findByUidAndSharedPublicly(String uid, Boolean shared);
 
 }

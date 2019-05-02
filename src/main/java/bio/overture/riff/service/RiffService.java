@@ -35,76 +35,75 @@ import java.util.stream.Collectors;
 @Service
 public class RiffService {
 
-  private RiffRepository repository;
+    private RiffRepository repository;
 
-  @Autowired
-  public RiffService(RiffRepository repository) {
-    this.repository = repository;
-  }
-
-  public List<RiffResponse> getUserRiffs(JWTUser user) {
-    return repository.findByUidAndSharedPublicly(user.getUid(), false)
-      .stream()
-      .map(RiffResponse::new)
-      .collect(Collectors.toList());
-  }
-
-  @SneakyThrows
-  public RiffResponse getRiff(String id) {
-    val opt = repository.findById(Long.valueOf(id, 36));
-    if (opt.isPresent()) {
-      return new RiffResponse(opt.get());
-    } else {
-      throw new RiffNotFoundException();
+    @Autowired
+    public RiffService(RiffRepository repository) {
+        this.repository = repository;
     }
-  }
 
-  @SneakyThrows
-  public RiffResponse makeRiff(JWTUser user, ShortenRequest request) {
-    val riff = Riff.builder()
-      .content(request.getContent())
-      .uid(user.getUid())
-      .alias(request.getAlias())
-      .sharedPublicly(request.isSharedPublicly())
-      .creationDate(new Date())
-      .updatedDate(new Date())
-      .build();
-
-    val newRiff = repository.save(riff);
-    return new RiffResponse(newRiff);
-  }
-
-  public boolean deleteRiff(JWTUser user, String id) {
-    val optionalRiff = repository.findById(Long.valueOf(id, 36));
-    if (optionalRiff.isPresent()) {
-      val riff = optionalRiff.get();
-      if (user.getUid().equals(riff.getUid())) {
-        repository.delete(riff);
-        return true;
-      }
+    public List<RiffResponse> getUserRiffs(JWTUser user) {
+        return repository.findByUidAndSharedPublicly(user.getUid(), false)
+                .stream()
+                .map(RiffResponse::new)
+                .collect(Collectors.toList());
     }
-    return false;
-  }
 
-  @SneakyThrows
-  public RiffResponse updateRiff(JWTUser user, String id, ShortenRequest request) {
-    val storageId = Long.valueOf(id, 36);
-    val optionalRiff = repository.findById(storageId);
-    if (optionalRiff.isPresent()) {
-      val riff = Riff.builder()
-        .id(storageId)
-        .content(request.getContent())
-        .uid(user.getUid())
-        .alias(request.getAlias())
-        .sharedPublicly(request.isSharedPublicly())
-        .creationDate(optionalRiff.get().getCreationDate())
-        .updatedDate(new Date())
-        .build();
-      val updated = repository.save(riff);
-      return new RiffResponse(updated);
-    } else {
-     throw new RiffNotFoundException();
+    @SneakyThrows
+    public RiffResponse getRiff(String id) {
+        val opt = repository.findById(Long.valueOf(id, 36));
+        return opt.map(RiffResponse::new).orElseThrow(RiffNotFoundException::new);
     }
-  }
+
+    @SneakyThrows
+    public RiffResponse makeRiff(JWTUser user, ShortenRequest request) {
+        val riff = Riff.builder()
+                .content(request.getContent())
+                .uid(user.getUid())
+                .alias(request.getAlias())
+                .sharedPublicly(request.isSharedPublicly())
+                .creationDate(new Date())
+                .updatedDate(new Date())
+                .build();
+
+        val newRiff = repository.save(riff);
+        return new RiffResponse(newRiff);
+    }
+
+    public boolean deleteRiff(JWTUser user, String id) {
+        val optionalRiff = repository.findById(Long.valueOf(id, 36));
+        return optionalRiff
+                .filter(r -> canAccessRiff(user, r))
+                .map(r -> {
+                    repository.delete(r);
+                    return true;
+                })
+                .orElse(false);
+    }
+
+    @SneakyThrows
+    public RiffResponse updateRiff(JWTUser user, String id, ShortenRequest request) {
+        val storageId = Long.valueOf(id, 36);
+        val optionalRiff = repository.findById(storageId);
+        val riff = optionalRiff
+                .filter(r -> canAccessRiff(user, r))
+                .map(r ->
+                        Riff.builder().id(storageId).content(request.getContent())
+                                .uid(user.getUid())
+                                .alias(request.getAlias())
+                                .sharedPublicly(request.isSharedPublicly())
+                                .creationDate(r.getCreationDate())
+                                .updatedDate(new Date())
+                                .build()
+                )
+                .orElseThrow(RiffNotFoundException::new);
+        val updated = repository.save(riff);
+        return new RiffResponse(updated);
+    }
+
+    private boolean canAccessRiff(JWTUser user, Riff r) {
+        return r.getUid().equals(user.getUid());
+    }
+
 
 }
