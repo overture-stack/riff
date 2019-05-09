@@ -1,7 +1,7 @@
 FROM openjdk:8u121-jdk-alpine
 
-ARG MAVEN_VERSION=3.5.2
-ARG SHA=707b1f6e390a65bde4af4cdaf2a24d45fc19a6ded00fff02e91626e3e42ceaff
+ARG MAVEN_VERSION=3.5.4
+ARG SHA=ce50b1c91364cb77efe3776f756a6d92b76d9038b0a0782f7d53acf1e997a14d
 ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
 
 RUN apk add --no-cache curl tar bash \
@@ -20,13 +20,16 @@ RUN mvn verify clean --fail-never
 
 COPY . .
 
-RUN mvn install -DskipTests
+RUN mkdir -p /srv/riff/install \
+    && mkdir -p /srv/riff/exec \
+    && mvn package -Dmaven.test.skip=true \
+    && mv /usr/src/app/target/riff-*-SNAPSHOT.jar /srv/riff/install/RIFF.jar \
+    && mv /usr/src/app/src/main/resources/scripts/run.sh /srv/riff/exec/run.sh
 
-FROM openjdk:8u121-jdk-alpine
+# setup required environment variables
+ENV RIFF_INSTALL_PATH /srv/riff
 
-COPY --from=0 /usr/src/app/target/*.jar .
+# start ego server
+WORKDIR $RIFF_INSTALL_PATH
+CMD $RIFF_INSTALL_PATH/exec/run.sh
 
-EXPOSE 8081
-
-CMD java -jar *.jar \
-    --server.port=8081

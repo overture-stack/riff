@@ -15,15 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package bio.overture.riff.repository;
+package bio.overture.riff.config;
 
-import bio.overture.riff.model.Riff;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
+@Configuration
+public class RiffConfig {
 
-public interface RiffRepository extends CrudRepository<Riff, Long> {
+  @Value("${riff.urlKey}")
+  private String urlKey;
 
-    List<Riff> findByUidAndSharedPublicly(String uid, Boolean shared);
+  public String getUrlKey() {
+    return urlKey;
+  }
 
 }

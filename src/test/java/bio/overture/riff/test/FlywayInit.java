@@ -15,15 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package bio.overture.riff.repository;
+package bio.overture.riff.test;
 
-import bio.overture.riff.model.Riff;
-import org.springframework.data.repository.CrudRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.flywaydb.core.Flyway;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
-import java.util.List;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-public interface RiffRepository extends CrudRepository<Riff, Long> {
+@Slf4j
+public class FlywayInit {
 
-    List<Riff> findByUidAndSharedPublicly(String uid, Boolean shared);
+  public static void initTestContainers(Connection connection) throws SQLException {
+    log.info("init test containers with flyway ******************************");
+
+    Flyway flyway = new Flyway();
+    flyway.setLocations("classpath:flyway/sql");
+    flyway.setDataSource(new SingleConnectionDataSource(connection, true));
+    flyway.migrate();
+  }
 
 }

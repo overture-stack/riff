@@ -1,0 +1,1 @@
+ALTER TABLE riff ADD PRIMARY KEY (id);

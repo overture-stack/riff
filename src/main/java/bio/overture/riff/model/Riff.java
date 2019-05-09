@@ -37,7 +37,7 @@ public class Riff {
 
   @Id
   @Column(nullable = false, name = "id", updatable = false)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
   String uid;
   @Type(type = "bio.overture.riff.utils.CustomJsonType")
