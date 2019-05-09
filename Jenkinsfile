@@ -1,4 +1,4 @@
-@Library(value="oicr", changelog=false) _	@Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
+@Library(value="oicr", changelog=false) _
 riff_api{}
 
 // @Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
