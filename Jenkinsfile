@@ -1,2 +1,4 @@
-@Library(value="oicr", changelog=false) _
-riff_api{}
+@Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
+ecs_service_type_1 {
+    projectName = "kids-first-riff"
+}
