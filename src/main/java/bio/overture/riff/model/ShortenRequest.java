@@ -24,8 +24,9 @@ import java.util.Map;
 @Data
 public class ShortenRequest {
 
-  Map<String, Object> content;
-  String alias;
-  boolean sharedPublicly;
+    Map<String, Object> content;
+    String alias;
+    boolean sharedPublicly;
+    String description;
 
 }

@@ -20,7 +20,6 @@ package bio.overture.riff.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
 import java.util.Map;
@@ -37,6 +36,7 @@ public class RiffResponse {
   boolean sharedPublicly;
   Date creationDate;
   Date updatedDate;
+  String description;
 
   public RiffResponse(Riff riff) {
     this.id = Long.toString(riff.id, 36);
@@ -46,6 +46,7 @@ public class RiffResponse {
     this.sharedPublicly = riff.sharedPublicly;
     this.creationDate = riff.getCreationDate();
     this.updatedDate = riff.getUpdatedDate();
+    this.description = riff.description;
   }
 
 }

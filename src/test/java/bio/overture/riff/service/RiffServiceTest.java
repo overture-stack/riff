@@ -70,6 +70,7 @@ public class RiffServiceTest {
         val req = new ShortenRequest();
         req.setAlias("Alias");
         req.setContent(ImmutableMap.of("thing", "value"));
+        req.setDescription("This is a description");
         req.setSharedPublicly(false);
 
         val req2 = new ShortenRequest();
@@ -108,6 +109,7 @@ public class RiffServiceTest {
         val riff = service.getRiff("1");
         assertThat(riff).isNotNull();
         assertThat(riff.getAlias()).isEqualTo("Alias");
+        assertThat(riff.getDescription()).isEqualTo("This is a description");
     }
 
     @Test
