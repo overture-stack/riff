@@ -35,16 +35,17 @@ import java.util.Map;
 @AllArgsConstructor
 public class Riff {
 
-  @Id
-  @Column(nullable = false, name = "id", updatable = false)
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
-  String uid;
-  @Type(type = "bio.overture.riff.utils.CustomJsonType")
-  Map<String, Object> content;
-  String alias;
-  boolean sharedPublicly;
-  Date creationDate;
-  Date updatedDate;
+    @Id
+    @Column(nullable = false, name = "id", updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+    String uid;
+    @Type(type = "bio.overture.riff.utils.CustomJsonType")
+    Map<String, Object> content;
+    String alias;
+    boolean sharedPublicly;
+    Date creationDate;
+    Date updatedDate;
+    String description;
 
 }

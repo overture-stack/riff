@@ -62,6 +62,7 @@ public class RiffService {
                 .uid(user.getUid())
                 .alias(request.getAlias())
                 .sharedPublicly(request.isSharedPublicly())
+                .description(request.getDescription())
                 .creationDate(new Date())
                 .updatedDate(new Date())
                 .build();
