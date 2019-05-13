@@ -27,6 +27,5 @@ public class ShortenRequest {
     Map<String, Object> content;
     String alias;
     boolean sharedPublicly;
-    String description;
 
 }
