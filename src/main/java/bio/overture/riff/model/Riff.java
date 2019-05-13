@@ -46,6 +46,4 @@ public class Riff {
     boolean sharedPublicly;
     Date creationDate;
     Date updatedDate;
-    String description;
-
 }
