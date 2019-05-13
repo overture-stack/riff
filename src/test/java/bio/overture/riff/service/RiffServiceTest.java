@@ -119,10 +119,13 @@ public class RiffServiceTest {
         val request = new ShortenRequest();
 
         request.setAlias(testAlias);
+        String testDescription = "Hello world!";
+        request.setDescription(testDescription);
         service.updateRiff(this.user, riffId, request);
         val newRiff = service.getRiff(riffId);
         assertThat(newRiff.getId()).isEqualTo(riffId);
         assertThat(newRiff.getAlias()).isEqualTo(testAlias);
+        assertThat(newRiff.getDescription()).isEqualTo(testDescription);
     }
 
     @Test
