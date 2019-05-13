@@ -1,2 +1,0 @@
-ALTER TABLE riff
-ADD COLUMN description VARCHAR(512);
