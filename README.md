@@ -19,7 +19,6 @@
 ## Introduction
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/75b155fe7c4846408c57d20431f57e19)](https://www.codacy.com/app/overture-stack/riff?utm_source=github.com&utm_medium=referral&utm_content=overture-stack/riff&utm_campaign=Badge_Grade)
 [![CircleCI](https://circleci.com/gh/overture-stack/riff.svg?style=svg)](https://circleci.com/gh/overture-stack/riff)
 [![Slack](http://slack.overture.bio/badge.svg)](http://slack.overture.bio)
 
