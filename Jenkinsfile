@@ -15,5 +15,6 @@ ecs_service_type_1_standard {
     vcpu_task                  = "1024"
     memory_task                = "2048"
     health_check_path = "/swagger-ui.html"
-    dependencies = "ecr,postgres_rds"
+    dependencies = "ecr"
+    additional_ssl_cert_domain_name = "*.kidsfirstdrc.org"
 }
