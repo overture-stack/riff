@@ -1,11 +1,12 @@
-@Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
+@Library(value='kids-first/aws-infra-jenkins-shared-libraries@feature/add-tests', changelog=false) _
 ecs_service_type_1_standard {
     projectName = "riff"
     agentLabel = "terraform-testing"
     environments = "dev,qa,prd"
     docker_image_type = "alpine"
     entrypoint_command = "/srv/riff/exec/run.sh"
-    deploy_scripts_version = "master"
+    deploy_scripts_version = "feature/add-tests"
+    ecs_service_type_1_version = "feature/add-tests"
     quick_deploy = "true"
     external_config_repo = "false"
     internal_app         = "false"
