@@ -5,7 +5,6 @@ ecs_service_type_1_standard {
     environments = "dev,qa,prd"
     docker_image_type = "alpine"
     entrypoint_command = "/srv/riff/exec/run.sh"
-    deploy_scripts_version = "master"
     quick_deploy = "true"
     external_config_repo = "false"
     internal_app         = "false"
@@ -17,4 +16,5 @@ ecs_service_type_1_standard {
     health_check_path = "/swagger-ui.html"
     dependencies = "ecr"
     additional_ssl_cert_domain_name = "*.kidsfirstdrc.org"
+    publish_to_public_repo = "true"
 }
