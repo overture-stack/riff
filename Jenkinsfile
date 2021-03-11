@@ -16,4 +16,5 @@ ecs_service_type_1_standard {
     health_check_path = "/swagger-ui.html"
     dependencies = "ecr"
     additional_ssl_cert_domain_name = "*.kidsfirstdrc.org"
+    publish_to_public_repo = "true"
 }
