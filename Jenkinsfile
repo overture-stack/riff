@@ -2,7 +2,7 @@
 ecs_service_type_1_standard {
     projectName = "riff"
     agentLabel = "terraform-testing"
-    environments = "dev,qa,prd"
+    environments = "qa,prd"
     docker_image_type = "alpine"
     entrypoint_command = "/srv/riff/exec/run.sh"
     quick_deploy = "true"
