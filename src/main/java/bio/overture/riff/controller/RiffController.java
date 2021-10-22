@@ -97,4 +97,16 @@ public class RiffController {
     }
   }
 
+  @DeleteMapping("/delete-phantom-sets")
+  public long deletePhantomSets(@RequestHeader(value = HttpHeaders.AUTHORIZATION) final String accessToken) {
+    long result;
+    val user = jwtFacade.getUser();
+    if (user.isPresent()) {
+      result = service.deletePhantomSets(user.get());
+    } else {
+      throw new UnauthorizedUserException("No user");
+    }
+    return result;
+  }
+
 }

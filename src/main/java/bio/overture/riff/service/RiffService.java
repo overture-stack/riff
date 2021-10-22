@@ -28,6 +28,7 @@ import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,7 +63,7 @@ public class RiffService {
                 .uid(user.getUid())
                 .alias(request.getAlias())
                 .sharedPublicly(request.isSharedPublicly())
-                .creationDate(new Date())
+                .creationDate(request.getCreationDate() == null? new Date() : request.getCreationDate())
                 .updatedDate(new Date())
                 .build();
 
@@ -79,6 +80,14 @@ public class RiffService {
                     return true;
                 })
                 .orElse(false);
+    }
+
+    public long deletePhantomSets(JWTUser user) {
+        //TODO: add user verification
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -1);
+
+        return repository.deleteByAliasAndCreationDateBefore("", cal.getTime());
     }
 
     @SneakyThrows

@@ -18,7 +18,7 @@
 package bio.overture.riff.model;
 
 import lombok.Data;
-
+import java.util.Date;
 import java.util.Map;
 
 @Data
@@ -27,5 +27,6 @@ public class ShortenRequest {
     Map<String, Object> content;
     String alias;
     boolean sharedPublicly;
+    Date creationDate;
 
 }

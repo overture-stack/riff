@@ -33,6 +33,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Calendar;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -155,6 +156,31 @@ public class RiffServiceTest {
     public void deleteRiffNotAuthorized(){
         boolean isDeleted = service.deleteRiff(user, "3");
         assertThat(isDeleted).isFalse();
+
+    }
+
+    @Test
+    public void deletePhantomSets(){
+        val req = new ShortenRequest();
+        req.setAlias("");
+        req.setContent(ImmutableMap.of("thing", "value"));
+        req.setSharedPublicly(false);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -1);
+        req.setCreationDate(cal.getTime());
+        service.makeRiff(user, req);
+        long deletedPhantomSets = service.deletePhantomSets(user);
+        assertThat(deletedPhantomSets).isGreaterThan(0);
+        deletedPhantomSets = service.deletePhantomSets(user);
+        assertThat(deletedPhantomSets).isEqualTo(0);
+    }
+
+    @Test
+    public void deletePhantomSetsNotAuthorized(){
+        long deletedPhantomSets = service.deletePhantomSets(user);
+
+        //TODO: add user verification
+        assertThat(false).isFalse();
 
     }
 }
