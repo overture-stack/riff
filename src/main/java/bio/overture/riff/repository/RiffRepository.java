@@ -18,12 +18,22 @@
 package bio.overture.riff.repository;
 
 import bio.overture.riff.model.Riff;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 public interface RiffRepository extends CrudRepository<Riff, Long> {
 
-  List<Riff> findByUidAndSharedPublicly(String uid, Boolean shared);
+    List<Riff> findByUidAndSharedPublicly(String uid, Boolean shared);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Riff r WHERE r.creationDate <= :creationDate AND r.alias = :alias")
+    int deleteByAliasAndCreationDateBefore(@Param("alias") String alias, @Param("creationDate") Date creationDate);
 
 }
