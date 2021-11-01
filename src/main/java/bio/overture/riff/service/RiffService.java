@@ -24,6 +24,7 @@ import bio.overture.riff.model.RiffResponse;
 import bio.overture.riff.model.ShortenRequest;
 import bio.overture.riff.repository.RiffRepository;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class RiffService {
 
@@ -82,7 +84,7 @@ public class RiffService {
                 .orElse(false);
     }
 
-    public long deletePhantomSets(JWTUser user) {
+    public int deletePhantomSets(JWTUser user) {
         //TODO: add user verification
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, -1);

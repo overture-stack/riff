@@ -34,6 +34,6 @@ public interface RiffRepository extends CrudRepository<Riff, Long> {
     @Modifying
     @Transactional
     @Query("DELETE FROM Riff r WHERE r.creationDate <= :creationDate AND r.alias = :alias")
-    long deleteByAliasAndCreationDateBefore(@Param("alias") String alias, @Param("creationDate") Date creationDate);
+    int deleteByAliasAndCreationDateBefore(@Param("alias") String alias, @Param("creationDate") Date creationDate);
 
 }

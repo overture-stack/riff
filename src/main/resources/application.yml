@@ -3,7 +3,7 @@ server:
 
 auth:
   jwt:
-   publicKeyUrl: "https://ego-qa.kidsfirstdrc.org/oauth/token/public_key"
+   publicKeyUrl: "https://kf-strides-ego-qa.kidsfirstdrc.org/oauth/token/public_key"
 
 spring:
   jpa:
