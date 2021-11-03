@@ -32,8 +32,7 @@ jobs:
       - run:
           name: Maven Test
           command: |
-            mvn test \
-            -D auth.jwt.publicKeyUrl=$EGO_TEST_SERVER_KEY_URL
+            mvn test
 
 workflows:
   version: 2

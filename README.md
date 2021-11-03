@@ -23,25 +23,20 @@
 [![CircleCI](https://circleci.com/gh/overture-stack/riff.svg?style=svg)](https://circleci.com/gh/overture-stack/riff)
 [![Slack](http://slack.overture.bio/badge.svg)](http://slack.overture.bio)
 
-TODO: Replace with introduction
 
 ## Features
 
-TODO: Description of features
-
-- Include a list of
-- all the many beautiful
-- web server features
+See: https://kf-strides-riff.kidsfirstdrc.org/swagger-ui.html for API documentation
 
 ## Requirements
 
 The application can be run locally or in a docker container, the requirements for each setup are listed below.
 
-### EGO
+### Keycloak
 
-A running instance of [EGO](https://github.com/overture-stack/ego/) is required to generate the Authorization tokens and to provide the verification key.
+A running instance of [Keycloak](https://www.keycloak.org/) is required to generate the Authorization tokens and to verify the tokens.
 
-[EGO](https://github.com/overture-stack/ego/) can be cloned and run locally if no public server is available.
+[Keycloak](https://www.keycloak.org/) can be run locally in a docker container see [here](https://www.keycloak.org/getting-started/getting-started-docker) or you can use the QA instance.
 
 ### Local
 
@@ -52,20 +47,13 @@ A running instance of [EGO](https://github.com/overture-stack/ego/) is required 
 
 - [Docker](https://www.docker.com/get-docker)
 
-## Quick Start
+### PostgreSQL
 
-Make sure the JWT Verification Key URL is configured, then you can run the server in a docker container or on your local machine.
+Easy to run in a docker container: 
+  
+`docker run --name Riff_PostgreSQL -e POSTGRES_PASSWORD=postgres -e POSTGRES_USERNAME=postgres -p 5432:5432 -d postgres`
 
-### Configure JWT Verification Key
-
-Update **application.yml**. Set `auth.jwt.publicKeyUrl` to the URL to fetch the JWT verification key. The application will not start if it can't set the verification key for the JWTConverter.
-
-The default value in the **application.yml** file is set to connect to EGO running locally on its default port `8081`.
-
-### Setup Database
-
-1. Install Postgres
-2. Create a Database: riff with user postgres and empty password
+Make sure to create database and the schema (see flyway migration scripts).
 
 #### Database Migrations with Flyway
 
@@ -119,11 +107,15 @@ Configure the port by changing `services.api.ports` in **docker-compose.yml**. P
 
 ## Testing
 
-TODO: Additional instructions for testing the application.
+The easiest way to test your dev is to run RiffIntregrationTest, it starts a DB postgres and a keycloak server. 
+
+It also starts a riff server and send some requests to it.
+
+Feel free to add integration tests in it if needed.
 
 ## API
 
-TODO: API Reference with examples, or a link to a wiki or other documentation source.
+See https://kf-strides-riff.kidsfirstdrc.org/swagger-ui.html
 
 ## Acknowledgements
 

@@ -17,20 +17,16 @@
 
 package bio.overture.riff.controller;
 
-import bio.overture.riff.config.RiffConfig;
-import bio.overture.riff.jwt.JWTFacadeInterface;
 import bio.overture.riff.model.RiffResponse;
 import bio.overture.riff.model.ShortenRequest;
 import bio.overture.riff.service.RiffService;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.keycloak.KeycloakPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.security.oauth2.common.exceptions.UnauthorizedUserException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Slf4j
@@ -38,24 +34,17 @@ import java.util.List;
 @RequestMapping("/riff")
 public class RiffController {
 
-  private JWTFacadeInterface jwtFacade;
   private RiffService service;
 
   @Autowired
-  public RiffController(JWTFacadeInterface jwtFacade, RiffService service) {
-    this.jwtFacade = jwtFacade;
+  public RiffController(RiffService service) {
     this.service = service;
   }
 
-  @GetMapping("/user/{userId}")
-  public List<RiffResponse> getUserRiffs(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = true) final String accessToken,
-                                         @PathVariable String userId) {
-    val user = jwtFacade.getUser();
-    if (user.isPresent()) {
-      return service.getUserRiffs(user.get());
-    } else {
-      throw new UnauthorizedUserException("No user");
-    }
+  @GetMapping("/user/{userId}") // path variable userId is not used but we keep it for backward compatibility.
+  public List<RiffResponse> getUserRiffs(@PathVariable String userId) {
+    val userIdFromJwtToken = ((KeycloakPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getName();
+    return service.getUserRiffs(userIdFromJwtToken);
   }
 
   @GetMapping("/{id}")
@@ -64,37 +53,21 @@ public class RiffController {
   }
 
   @PostMapping("/shorten")
-  public RiffResponse makeRiff(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = true) final String accessToken,
-                               @RequestBody ShortenRequest request) {
-    val user = jwtFacade.getUser();
-
-    if (user.isPresent()) {
-      return service.makeRiff(user.get(), request);
-    } else {
-      throw new UnauthorizedUserException("No user");
-    }
+  public RiffResponse makeRiff(@RequestBody ShortenRequest request) {
+    val userId = ((KeycloakPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getName();
+    return service.makeRiff(userId, request);
   }
 
   @PutMapping("/{id}")
-  public RiffResponse updateRiff(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = true) final String accessToken,
-                                 @PathVariable("id") String id, @RequestBody ShortenRequest request) {
-    val user = jwtFacade.getUser();
-    if (user.isPresent()) {
-      return service.updateRiff(user.get(), id, request);
-    } else {
-      throw new UnauthorizedUserException("No user");
-    }
+  public RiffResponse updateRiff(@PathVariable("id") String id, @RequestBody ShortenRequest request) {
+    val userId = ((KeycloakPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getName();
+    return service.updateRiff(userId, id, request);
   }
 
   @DeleteMapping("/{id}")
-  public boolean deleteRiff(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = true) final String accessToken,
-                            @PathVariable("id") String id) {
-    val user = jwtFacade.getUser();
-    if (user.isPresent()) {
-      return service.deleteRiff(user.get(), id);
-    } else {
-      throw new UnauthorizedUserException("No user");
-    }
+  public boolean deleteRiff(@PathVariable("id") String id) {
+    val userId = ((KeycloakPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getName();
+    return service.deleteRiff(userId, id);
   }
 
 }
