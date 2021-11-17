@@ -7,6 +7,9 @@
 # === Install Path
 export RIFF_INSTALL_PATH=
 
+# === Cors Allowed domains
+export RIFF_CORS_ALLOWED_DOMAINS=
+
 # === DB Config
 export RIFF_DB=riff
 export RIFF_DB_HOST=localhost
@@ -20,14 +23,7 @@ export RIFF_DB_PASS=
 export RIFF_ACTIVE_PROFILES="default"
 export RIFF_SERVER_PORT=8081
 
-# === VAULT CONFIG
-# Leave all below empty if not using VAULT
-export VAULT_APPLICATION_NAME=development/overture/riff
-export RIFF_VAULT_URI=
-export RIFF_VAULT_SCHEME=http
-export RIFF_VAULT_HOST=localhost
-export RIFF_VAULT_PORT=8200
-#leave IAM Role blank if using Token authentication
-export RIFF_IAM_ROLE=
-#leave Token blank if using IAM Role
-export VAULT_TOKEN=
+# === Keycloak configs
+export KEYCLOAK_REALM=
+export KEYCLOAK_URL=
+export KEYCLOAK_CLIENT=

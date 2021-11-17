@@ -18,7 +18,6 @@
 package bio.overture.riff.service;
 
 import bio.overture.riff.exception.RiffNotFoundException;
-import bio.overture.riff.jwt.JWTUser;
 import bio.overture.riff.model.Riff;
 import bio.overture.riff.model.RiffResponse;
 import bio.overture.riff.model.ShortenRequest;
@@ -42,8 +41,8 @@ public class RiffService {
         this.repository = repository;
     }
 
-    public List<RiffResponse> getUserRiffs(JWTUser user) {
-        return repository.findByUidAndSharedPublicly(user.getUid(), false)
+    public List<RiffResponse> getUserRiffs(String userId) {
+        return repository.findByUidAndSharedPublicly(userId, false)
                 .stream()
                 .map(RiffResponse::new)
                 .collect(Collectors.toList());
@@ -56,10 +55,10 @@ public class RiffService {
     }
 
     @SneakyThrows
-    public RiffResponse makeRiff(JWTUser user, ShortenRequest request) {
+    public RiffResponse makeRiff(String userId, ShortenRequest request) {
         val riff = Riff.builder()
                 .content(request.getContent())
-                .uid(user.getUid())
+                .uid(userId)
                 .alias(request.getAlias())
                 .sharedPublicly(request.isSharedPublicly())
                 .creationDate(new Date())
@@ -70,10 +69,10 @@ public class RiffService {
         return new RiffResponse(newRiff);
     }
 
-    public boolean deleteRiff(JWTUser user, String id) {
+    public boolean deleteRiff(String userId, String id) {
         val optionalRiff = repository.findById(Long.valueOf(id, 36));
         return optionalRiff
-                .filter(r -> canAccessRiff(user, r))
+                .filter(r -> canAccessRiff(userId, r))
                 .map(r -> {
                     repository.delete(r);
                     return true;
@@ -82,14 +81,14 @@ public class RiffService {
     }
 
     @SneakyThrows
-    public RiffResponse updateRiff(JWTUser user, String id, ShortenRequest request) {
+    public RiffResponse updateRiff(String userId, String id, ShortenRequest request) {
         val storageId = Long.valueOf(id, 36);
         val optionalRiff = repository.findById(storageId);
         val riff = optionalRiff
-                .filter(r -> canAccessRiff(user, r))
+                .filter(r -> canAccessRiff(userId, r))
                 .map(r ->
                         Riff.builder().id(storageId).content(request.getContent())
-                                .uid(user.getUid())
+                                .uid(userId)
                                 .alias(request.getAlias())
                                 .sharedPublicly(request.isSharedPublicly())
                                 .creationDate(r.getCreationDate())
@@ -101,8 +100,8 @@ public class RiffService {
         return new RiffResponse(updated);
     }
 
-    private boolean canAccessRiff(JWTUser user, Riff r) {
-        return r.getUid().equals(user.getUid());
+    private boolean canAccessRiff(String userId, Riff r) {
+        return r.getUid().equals(userId);
     }
 
 
