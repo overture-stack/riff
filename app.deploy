@@ -4,7 +4,7 @@ deploy {
     secrets_location = "riff"
     jenkinsfile_name = "app.deploy"
     environments = "qa,prd"
-    architecture_type = "ecs-service-type-1"
+    architecture_type = "aws-ecs-service-type-1"
 
     enable_waf             = "1"
     docker_image_type = "alpine"
