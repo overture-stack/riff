@@ -1,6 +1,6 @@
 @Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
 deploy {
-    project = "riff"
+    projectName = "riff"
     secrets_location = "riff"
     jenkinsfile_name = "app.deploy"
     environments = "qa,prd"
