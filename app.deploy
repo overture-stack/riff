@@ -5,6 +5,7 @@ deploy {
     jenkinsfile_name = "app.deploy"
     environments = "qa,prd"
     architecture_type = "aws-ecs-service-type-1"
+    main_branch = "feature/add-app-deploy"
 
     enable_waf             = "1"
     docker_image_type = "alpine"
@@ -17,4 +18,5 @@ deploy {
     memory_task                = "2048"
     health_check_path = "/swagger-ui.html"
     dependencies = "ecr"
+
 }
