@@ -8,6 +8,7 @@ deploy {
     main_branch = "feature/add-app-deploy"
 
     enable_waf             = "1"
+    create_sns_topic       = "0"
     docker_image_type = "alpine"
     entrypoint_command = "/srv/riff/exec/run.sh"
     internal_app         = "false"
