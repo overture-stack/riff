@@ -1,12 +1,13 @@
 @Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
 deploy {
-    projectName = "riff"
+    project = "riff"
+    secrets_location = "riff"
+    jenkinsfile_name = "app.deploy"
     environments = "qa,prd"
+
     enable_waf             = "1"
     docker_image_type = "alpine"
     entrypoint_command = "/srv/riff/exec/run.sh"
-    quick_deploy = "true"
-    external_config_repo = "false"
     internal_app         = "false"
     container_port = "8081"
     vcpu_container             = "1024"
@@ -15,6 +16,4 @@ deploy {
     memory_task                = "2048"
     health_check_path = "/swagger-ui.html"
     dependencies = "ecr"
-    publish_to_public_repo = "true"
-    create_additional_internal_alb = "1"
 }
