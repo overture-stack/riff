@@ -1,11 +1,9 @@
 @Library(value='kids-first/aws-infra-jenkins-shared-libraries', changelog=false) _
 deploy {
     projectName = "riff"
-    secrets_location = "riff"
     jenkinsfile_name = "app.deploy"
     environments = "qa,prd"
     architecture_type = "aws-ecs-service-type-1"
-    main_branch = "feature/add-app-deploy"
 
     enable_waf             = "1"
     create_sns_topic       = "0"
