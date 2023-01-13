@@ -5,7 +5,7 @@
 [<img hspace="5" src="https://img.shields.io/badge/Code%20of%20Conduct-2.1-blue?style=for-the-badge">](code_of_conduct.md)
 
 <div>
-<img align="right" width="66vw" vspace="5" src="icon-riff.png" alt="riff-logo" hspace="30"/>
+<img align="right" width="88vw" vspace="5" src="icon-riff.png" alt="riff-logo" hspace="30"/>
 </div>
 
 Riff is a microservice specifically designed for saving and sharing user queries through convenient short URLs. It is simple to use, flexible in storing arbitrary information, and allows for easy collaboration through social channels. 
@@ -16,7 +16,7 @@ Riff is a microservice specifically designed for saving and sharing user queries
 
 > 
 > <div>
-> <img align="left" src="ov-logo.png" height="80" hspace="0"/>
+> <img align="left" src="ov-logo.png" height="60" hspace="0"/>
 > </div>
 > 
 > *Riff is part of [Overture](https://www.overture.bio/) an ecosystem of research software components, each with narrow responsibilities made to connect minds and data.</br></br>*
