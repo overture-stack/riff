@@ -25,15 +25,6 @@ Riff is a microservice specifically designed for saving and sharing user queries
 
 <!--Blockqoute-->
 
-## Documentation
-
-- *coming soon*
-<!--
-
-- See our Developer [wiki](https://github.com/overture-stack/riff/wiki)
-
--->
-
 ## Riff Setup
 
 This Quick Start section is designed to help you get up and running with Riff as quickly and easily as possible.
@@ -115,6 +106,15 @@ To run outstanding migrations:
 ```
 
 To learn more about the naming conventions used for migrations, [click here](https://flywaydb.org/documentation/concepts/migrations.html).
+
+## Documentation
+
+- *coming soon*
+<!--
+
+- See our Developer [wiki](https://github.com/overture-stack/riff/wiki)
+
+-->
 
 ## Support & Contributions
 
